@@ -62,9 +62,12 @@ app:
 
 # ============================================================
 # 默认租户编码（未传 tenantCode 时）· framework AuthService 可配置（framework 0.1.1+）
+# 注册验证码必填（2026-09 收紧）：默认关闭开放注册；确需开放注册时显式置 true
 # ============================================================
 auth:
   default-tenant-code: ${AUTH_DEFAULT_TENANT_CODE:huntercat}
+  register:
+    allow-open-register: ${AUTH_ALLOW_OPEN_REGISTER:false}
 
 # ============================================================
 # SpringDoc OpenAPI
