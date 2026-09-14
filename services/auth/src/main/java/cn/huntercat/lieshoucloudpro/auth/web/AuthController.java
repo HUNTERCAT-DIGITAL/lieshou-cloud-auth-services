@@ -16,12 +16,12 @@ import jakarta.validation.Valid;
 
 import cn.huntercat.lieshou.framework.auth.AuthService;
 import cn.huntercat.lieshou.framework.auth.JwtService;
+import cn.huntercat.lieshou.framework.auth.dto.AuthDtos.ActivateRequest;
 import cn.huntercat.lieshou.framework.auth.dto.AuthDtos.LoginRequest;
 import cn.huntercat.lieshou.framework.auth.dto.AuthDtos.LoginWithCodeRequest;
 import cn.huntercat.lieshou.framework.auth.dto.AuthDtos.RefreshRequest;
 import cn.huntercat.lieshou.framework.auth.dto.AuthDtos.RegisterRequest;
 import cn.huntercat.lieshou.framework.auth.dto.AuthDtos.ResetPasswordRequest;
-import cn.huntercat.lieshou.framework.auth.dto.AuthDtos.ActivateRequest;
 import cn.huntercat.lieshou.framework.auth.dto.AuthDtos.SendCodeRequest;
 import cn.huntercat.lieshou.framework.auth.dto.AuthDtos.SwitchTenantRequest;
 import cn.huntercat.lieshou.framework.auth.dto.AuthDtos.TokenResponse;
@@ -148,9 +148,7 @@ public class AuthController {
     return ResponseEntity.noContent().build();
   }
 
-  @Operation(
-      summary = "首次登录激活(管理员建用户未设密码 · 2026-08)",
-      description = "登录后(token 即身份)直接设置密码,无需再次验证码")
+  @Operation(summary = "首次登录激活(管理员建用户未设密码 · 2026-08)", description = "登录后(token 即身份)直接设置密码,无需再次验证码")
   @SecurityRequirement(name = "bearerAuth")
   @ApiResponses({
     @ApiResponse(responseCode = "200", description = "Activated + tokens returned"),
