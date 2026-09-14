@@ -1,7 +1,5 @@
 package cn.huntercat.lieshoucloudpro.auth.feign;
 
-import java.nio.charset.StandardCharsets;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 
@@ -9,13 +7,14 @@ import cn.huntercat.lieshou.framework.common.api.BaseException;
 import feign.Response;
 import feign.Util;
 import feign.codec.ErrorDecoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * UserAuthClient 的 Feign 错误解码.
  *
  * <p>把 user 服务 4xx 业务错误（响应体 {@code {"error":"SEND_TOO_FREQUENT"}}）解码成 {@link BaseException}
- * （业务错误码透传），而非默认的 {@code FeignException}——否则框架层 {@code AuthService} 会把它当依赖故障
- * 误报成 503「服务不可用」。典型场景：短信验证码发送过于频繁（SEND_TOO_FREQUENT）。
+ * （业务错误码透传），而非默认的 {@code FeignException}——否则框架层 {@code AuthService} 会把它当依赖故障 误报成
+ * 503「服务不可用」。典型场景：短信验证码发送过于频繁（SEND_TOO_FREQUENT）。
  */
 public class UserAuthErrorDecoder {
 
@@ -29,8 +28,7 @@ public class UserAuthErrorDecoder {
         if (response.status() >= 400 && response.status() < 500) {
           String code = extractErrorCode(response);
           if (code != null && !code.isBlank()) {
-            return new BaseException(
-                code, HttpStatus.valueOf(response.status()), "上游业务错误：" + code);
+            return new BaseException(code, HttpStatus.valueOf(response.status()), "上游业务错误：" + code);
           }
         }
         return delegate.decode(methodKey, response);

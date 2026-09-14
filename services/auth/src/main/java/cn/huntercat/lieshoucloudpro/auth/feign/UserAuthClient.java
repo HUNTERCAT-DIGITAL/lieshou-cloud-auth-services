@@ -48,8 +48,7 @@ public interface UserAuthClient extends UserAuthPort {
 
   @Override
   @GetMapping("/auth/by-tenant-phone/{tenantCode}/{phone}")
-  UserAuthView findByTenantAndPhone(
-      @PathVariable String tenantCode, @PathVariable String phone);
+  UserAuthView findByTenantAndPhone(@PathVariable String tenantCode, @PathVariable String phone);
 
   @Override
   @GetMapping("/auth/by-email/{email}")
