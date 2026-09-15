@@ -9,8 +9,8 @@
 
 ```bash
 cat .ai/MEMORY.md         # 身份 / 架构 / 阶段 / 待办
-cat .ai/AGENTS.md         # 协作边界 + 启动读序列
-cat .ai/CONVENTIONS.md    # 代码规约（含"不直接改 submodule"）
+cat AGENTS.md            # 协作边界 + 启动读序列
+cat .ai/CONVENTIONS.md    # 代码规约（含“上游 framework 边界”）
 cat .ai/SECURITY.md       # JWT / 限流 / 白名单 / 客户内容禁令
 cat .ai/TESTING.md        # 无 DB 事实 + 7 个既有用例
 cat README.md CHANGELOG.md
@@ -20,7 +20,7 @@ cat README.md CHANGELOG.md
 
 | 纪律 | 原因 |
 | --- | --- |
-| 改 `framework/` 里任何文件前先停手 | 那是 submodule；必须改上游 `lieshou-framework` 再 bump pin |
+| 改 `framework-*` 源码前先停手 | 上游在 `lieshou-framework` 仓（本仓无 submodule）；改上游 → 发版 → 本仓升版本号 |
 | 改 JWT / 白名单 / 限流 / Feign 契约 → 先写 `docs/adr/` | 影响 gateway + 全部 4 端 |
 | 打 tag / 触发 Nexus 发布 → 必须先问人 | 发布点只增不改；Nexus maven-releases 不容重复发 |
 | 声称"绿了/发布了"必须贴证据 | `mvn verify` 输出、pipeline URL、Nexus 资产 URL 三选一以上 |

@@ -6,13 +6,13 @@
 
 你是 **lieshou-cloud-auth-services**（L2 底座 · 鉴权服务）的 AI 协作伙伴。
 技术栈：Java 21 · Spring Boot 3.5.7 · Spring Cloud 2023.0.5 · Spring Cloud Alibaba 2023.0.1.0 · Maven（聚合构建，
-parent = `framework-parent`，来自 `framework/` submodule）· JUnit 5 + JaCoCo + Spotless。
+parent = `framework-parent`，从内网 Nexus `maven-public` 按坐标解析，**本仓无 submodule**）· JUnit 5 + JaCoCo + Spotless。
 
 ## 怎么读这个仓库（启动顺序）
 
 ```bash
 cat .ai/MEMORY.md        # 长期事实 + 当前阶段 + 待办（先读这个）
-cat .ai/AGENTS.md        # 本文件
+cat AGENTS.md            # 本文件（仓库根）
 cat .ai/CONVENTIONS.md   # 代码规约（增量，基线见文首指针）
 cat .ai/SECURITY.md      # 安全规约（JWT / 限流 / 密钥）
 cat .ai/TESTING.md       # 测试规约 + 无 DB 事实
@@ -24,11 +24,11 @@ cat CHANGELOG.md         # 版本变更
 ## 架构速览
 
 ```
-pom.xml（聚合器：framework + services/auth）
-├── framework/            submodule → lieshou-framework（framework-parent 提供 BOM/spotless/jacoco/
-│                         distributionManagement；framework-auth 是鉴权业务核心）
+pom.xml（聚合器：仅 services/auth；上游 framework 不随仓）
 └── services/auth/        Spring Boot 薄壳：AuthController + SecurityConfig + OpenApiConfig
                           + feign/UserAuthClient（→ user-service 校验密码）
+     parent = cn.huntercat:framework-parent（Nexus maven-public 解析，提供 BOM/spotless/jacoco/
+     distributionManagement）；framework-auth / framework-common 是鉴权业务核心，同样走 Nexus
 ```
 
 - **业务核心不在本仓**：登录/验证码/注册/重置/切换租户的编排在 `framework-auth` 的 `AuthService`
@@ -44,8 +44,8 @@ pom.xml（聚合器：framework + services/auth）
 | 🟢 | 加测试、改 bug、补文档 | ✅ 直接 |
 | 🟡 | 加依赖、改 `services/auth/pom.xml`、改 `application.yml` 配置结构 | ⚠️ 先告知影响 |
 | 🟡 | 改 Feign 契约（`UserAuthClient` / `UserAuthPort` 实现）、错误码 | ⚠️ 先告知影响（跨服务契约） |
-| 🟡 | `framework` gitlink（submodule pin）前移 | ⚠️ 先告知影响（改的是上游版本） |
-| 🔴 | **直接改 `framework/` 里的文件** | ❌ 绝不 —— 改上游 `lieshou-framework` 仓再 bump pin |
+| 🟡 | 上游版本号前移（`framework-parent` / `framework-*` 的 `<version>`） | ⚠️ 先告知影响（改的是上游版本） |
+| 🔴 | 改 `framework-*` 源码 | ❌ 绝不 —— 上游在 `lieshou-framework` 仓，改那里 → 发版 → 本仓升版本号 |
 | 🔴 | 改 CI（`.gitlab-ci.yml`）/ 打 tag / 触发 Nexus 发布 | ❌ 先问（发布点只增不改） |
 | 🔴 | 直推 `main`、`git push -f`、提交 secret | ❌ **绝不**（`main` 已保护，走特性分支 + MR） |
 

@@ -1,8 +1,28 @@
 # Changelog
 
-本仓（`lieshoucloud-auth`）的版本变更。版本号 = `services/auth` 的 Maven 版本，默认继承上游
-`framework-parent`；制品发到内网 Nexus `maven-releases`（见 `.ai/MEMORY.md`）。
+本仓（`lieshoucloud-auth`）的版本变更。版本号 = `services/auth` 的 Maven 版本（显式声明，与上游
+`framework-parent` 同线）；制品发到内网 Nexus `maven-releases`（见 `.ai/MEMORY.md`）。
 格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)。
+
+## 0.3.3（2026-09-15）
+
+上游依赖改走内网 Nexus，**移除 `framework` submodule**（无业务代码行为变更）。
+
+### 变更
+
+- 删除 `framework` submodule（`.gitmodules` / gitlink）：`framework-parent` / `framework-auth` / `framework-common`
+  一律从内网 Nexus `maven-public` 按坐标解析
+- `services/auth` parent `framework-parent` 0.3.1 → `0.3.3`，并删除 `relativePath`（不再指向本地 submodule）
+- CI（`.gitlab-ci.yml`）：删掉 `git submodule update` / `GIT_SSL_NO_VERIFY` / 子仓 URL 重写；改为
+  `before_script` 统一导入内网 CA + 生成 `-s /tmp/ci-settings.xml`（mirror → Nexus）
+- `services/auth/Dockerfile`：构建阶段改名 `builder`；删除对 submodule 的依赖（不再 `-am`）；
+  容器内 `keytool` 导入内网 CA；改 `-s services/.m2-settings.xml`（BuildKit cache mount 会遮住
+  `/root/.m2/settings.xml`，COPY 进去反而失效）
+- `services/.m2-settings.xml` 瘦身（只留 Nexus mirror）；新增 `services/.ci/caddy-root.crt`（内网 CA）
+
+### 移除
+
+- `CHANGELOG` 中“bump framework submodule pin”类操作 —— 今后只升版本号
 
 ## 0.3.2（2026-09-14）
 

@@ -7,7 +7,7 @@
 | 路径 | 用途 | 更新频率 |
 | --- | --- | --- |
 | `MEMORY.md` | 长期记忆：身份 / 架构 / 约定 / 当前阶段 / 待办 | 重大变更后 |
-| `AGENTS.md` | 给 AI agent 的协作指引 + 启动读序列 | 风格/边界变更时 |
+| `AGENTS.md`（仓库根） | 给 AI agent 的协作指引 + 启动读序列 | 风格/边界变更时 |
 | `CONVENTIONS.md` · `SECURITY.md` · `TESTING.md` · `AI_USAGE.md` | 规约（**增量**：基线在 ai-kit，见各文件文首指针） | 规约变更时 |
 | `decisions/` | **历史 ADR 快照**（出处 `lieshou-cloud-pro/.ai/decisions/`），只读引用 | 仅在需要补快照时 |
 | `conversations/` · `prompts/` | 本仓不设（薄壳仓无内容；历史对话在维护者本机） | — |
@@ -18,7 +18,7 @@
 
 ```bash
 cat .ai/MEMORY.md        # 项目状态 + 关键决策 + 待办
-cat .ai/AGENTS.md        # 协作边界 + 风格偏好 + 启动读序列
+cat AGENTS.md            # 协作边界（仓库根） + 风格偏好 + 启动读序列
 ls  .ai/decisions/       # 需要理解"当年为什么这么选"时展开
 ls  docs/adr/            # 本仓决策
 ```
