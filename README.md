@@ -1,21 +1,20 @@
 # lieshou-cloud-auth-services · 鉴权服务
 
 > L2 底座服务仓。自 `lieshou-cloud-core/services/auth` 拆分（2026-08 细粒度）。
-> 鉴权业务核心（登录/验证码/注册/重置/切换租户）在 **framework-auth**（上游 `lieshou-framework`，本仓以 submodule 引用）；
-> 本仓只保留 Spring Boot 薄壳（Controller + 配置 + Feign 端口实现）。
+> 鉴权业务核心（登录/验证码/注册/重置/切换租户）在 **framework-auth**（上游 `lieshou-framework`，从内网 Nexus 按坐标解析）；
+> 本仓无 submodule，只保留 Spring Boot 薄壳（Controller + 配置 + Feign 端口实现）。
 > 服务定位：签发/刷新 JWT，密码校验经 Feign 委托 `user-service`；网关校验 token 后透传 `X-User-*` 给下游。
 
 ## 构建
 
 ```bash
-# 聚合构建（reactor 内含 framework submodule，无需单独 install）
+# 聚合构建（上游 framework 从内网 Nexus 解析，本仓无 submodule）
 mvn -B -ntp verify                      # 门：编译 + 单测 + jacoco + spotless:check
 mvn -B -ntp -DskipTests package         # 仅打包 → services/auth/target/lieshoucloud-auth.jar
 mvn -B -ntp spotless:apply              # 本地格式化
 ```
 
-前置：JDK 21（`JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64`）、Maven 3.8+。
-首次克隆需拉子模块：`git submodule update --init --recursive`。
+前置：JDK 21（`JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64`）、Maven 3.8+，且 `~/.m2/settings.xml` 已 mirror 到内网 Nexus `maven-public`（`framework-*` 只在私服）。
 
 ## 运行
 
@@ -42,7 +41,7 @@ java -jar services/auth/target/lieshoucloud-auth.jar     # 默认 8083；经 gat
 ## 制品
 
 - Maven：`cn.huntercat:lieshoucloud-auth` → 内网 Nexus `maven-releases`
-  （依赖：JDK/Spring 版本、parent `framework-parent` 由上游提供，见 `.ai/MEMORY.md`）
+  （依赖：JDK/Spring 版本、parent `framework-parent` 由上游发布到内网 Nexus `maven-public`，版本线 0.3.3，见 `.ai/MEMORY.md`）
 - 镜像：待接 Harbor（CD 未做，见 `.ai/MEMORY.md` 待办）
 
 ## 文档导航
