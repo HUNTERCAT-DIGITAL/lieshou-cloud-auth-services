@@ -17,7 +17,8 @@
 
 ## 2. 上游边界（本仓最重要的一条）
 
-- **不直接改 `framework/`**（submodule）。要在 `framework-auth` 里加/改逻辑 → 改上游 `lieshou-framework` 仓 → 发版 → 本仓 bump pin。
+- **不改上游 `framework-*` 源码**（本仓无 submodule，源码不在本仓）。要在 `framework-auth` 里加/改逻辑 → 改上游
+  `lieshou-framework` 仓 → 发布到 Nexus → 本仓升 `<version>`（`framework-parent` / `framework-*`）。
 - 依赖只允许单向：本仓 → `framework-*`。反过来（framework 依赖服务仓）永远不允许。
 - 需要"上游没有的"业务能力时：先看是否属于**通用**能力（→ 上游），还是**本服务专属**（→ 本仓 `web/`/`config/` 下新建类）。
 
@@ -54,7 +55,7 @@ mvn -B -ntp spotless:check     # 只检查
 
 ## 6. 本仓禁止
 
-- ❌ 直接改 submodule 内容、直接推 `main`
+- ❌ 直接改 `framework-*` 源码（不在本仓）、直接推 `main`
 - ❌ 在 `application.yml` 里写真实 `JWT_SECRET` / 密码 / token（一律 `${ENV:default}` 形式）
 - ❌ 关闭 `spotless` / 跳过测试换取"绿"（`-DskipTests` 只允许本地打包预览，不允许出现在 CI）
 - ❌ 在日志里打 token / 密码 / 验证码

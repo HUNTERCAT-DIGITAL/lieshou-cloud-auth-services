@@ -49,7 +49,7 @@ java -jar services/auth/target/lieshoucloud-auth.jar     # 默认 8083；经 gat
 | 文件 | 用途 |
 | --- | --- |
 | `.ai/MEMORY.md` | 长期事实 / 当前阶段 / 待办（**会话先读**） |
-| `.ai/AGENTS.md` | AI 协作边界与启动读序列 |
+| `AGENTS.md` | AI 协作边界与启动读序列（仓库根） |
 | `.ai/CONVENTIONS.md` · `.ai/SECURITY.md` · `.ai/TESTING.md` | 代码 / 安全 / 测试规约（增量，基线在 ai-kit） |
 | `docs/adr/` | 本仓决策（历史 ADR 快照见 `.ai/decisions/`，出处 `lieshou-cloud-pro`） |
 | `CHANGELOG.md` | 版本变更 |
