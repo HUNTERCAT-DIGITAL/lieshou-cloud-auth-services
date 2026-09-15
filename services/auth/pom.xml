@@ -8,11 +8,11 @@
     <parent>
         <groupId>cn.huntercat</groupId>
         <artifactId>framework-parent</artifactId>
-        <version>0.3.3</version>
+        <version>0.3.4</version>
     </parent>
 
     <artifactId>lieshoucloud-auth</artifactId>
-    <version>0.3.3</version>
+    <version>0.3.4</version>
     <name>lieshou-cloud · Auth Service</name>
     <description>鉴权服务（JWT 签发 + 验证 · Phase 5 · 闭环鉴权）</description>
 
